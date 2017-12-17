@@ -1,0 +1,4 @@
+python -m pip install numpy
+python -m pip install matplotlib
+python -m pip install PyOpenGL
+python -m pip install pysdl2
