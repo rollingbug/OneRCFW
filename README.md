@@ -2,7 +2,7 @@
 An Arduino/AVR based flight controller for RC fixed wing.  
   
   
-![PCB picture](OneRCDesignDoc\PCB_block_diagram.png)
+![PCB picture](OneRCDesignDoc/PCB_block_diagram.png)
 
     - 5 input channels (Throttle, Ailerons, Elevator, Rudder, flight mode)  
     - 4 output channels (0.5 us resolution PWM/PPM signal generator).  
@@ -18,7 +18,7 @@ An Arduino/AVR based flight controller for RC fixed wing.
     - Airplane runtime status monitoring function.  
   
   
-![Pin assignment picture](OneRCDesignDoc\arduino_flyctrl_layout_20171217_v1_8.png)
+![Pin assignment picture](OneRCDesignDoc/arduino_flyctrl_layout_20171217_v1_8.png)
   
   
 Details:
