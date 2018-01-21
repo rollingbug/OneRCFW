@@ -15,10 +15,10 @@ An Arduino/AVR based flight controller for RC fixed wing.
     - Airplane configuration save/reload/reset function.  
     - Airplane runtime status monitoring function.  
 
-![PCB picture](OneRCDesignDoc\PCB_block_diagram.png)  
+![PCB picture](OneRCDesignDoc/PCB_block_diagram.png)  
 
   
-![Pin assignment picture](OneRCDesignDoc\arduino_flyctrl_layout_20171217_v1_8.png)
+![Pin assignment picture](OneRCDesignDoc/arduino_flyctrl_layout_20171217_v1_8.png)
 
 
 Details:
