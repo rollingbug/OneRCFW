@@ -5,7 +5,7 @@
  *    / /_/ / /   \ / / ____/ /  -- /  /  /__   __   /  /__  _/  /_  / __ <
  *   /_____/ /_/ \_/ /_____/ /__/ \_\ /_____/  /_/  /_____/ /_____/ /_____/
  *
- *      A amateur remote control software library. Use at your own risk.
+ *     An amateur remote control software library. Use at your own risk.
  *
  * @file    OneRCAirplane.h
  * @brief
@@ -25,7 +25,7 @@
 
 #define AIRPLANE_CONFIG_ID              0x315f4150  /* "1_AP" */
 
-#define AIRPLANE_FW_DATE                0x20171216
+#define AIRPLANE_FW_DATE                0x20180303
 
 #define AIRPLANE_DBG_PIN_HIGH()         do{                         \
                                             PORTC |= _BV(PORTC0);   \
@@ -50,6 +50,8 @@
 /* Maximum pitch compensation angle limitation +- N */
 #define AIRPLANE_BANK_TURN_MAX_PITCH    5.0     /* Degree */
 
+#define AIRPLANE_BANK_TURN_MAX_GAIN     1.5     /* +- 1.5 */
+
 /*
  * Gain setting for mapping roll [180 .. 0 .. -180] to pitch [N .. 0 .. -N] degree
  * Say pitch_3_degree / (1.0 - cos(roll_30_degree)) = 22.3923048447,
@@ -59,6 +61,7 @@
 
 /* Airplane status snapshot function */
 #define AIRPLANE_STATUS_SNAPSHOT_EN     false
+
 
 /*
  *******************************************************************************
@@ -89,6 +92,7 @@ typedef enum airplane_fly_mode{
     AIRPLANE_SELF_STABILIZE,
     AIRPLANE_RETURN_TO_HOME,
 }__attribute__((packed)) AIRPLANE_FLY_MODE;
+
 
 /*
  *******************************************************************************

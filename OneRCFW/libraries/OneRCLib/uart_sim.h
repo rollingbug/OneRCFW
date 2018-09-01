@@ -5,7 +5,7 @@
  *    / /_/ / /   \ / / ____/ /  -- /  /  /__   __   /  /__  _/  /_  / __ <
  *   /_____/ /_/ \_/ /_____/ /__/ \_\ /_____/  /_/  /_____/ /_____/ /_____/
  *
- *      A amateur remote control software library. Use at your own risk.
+ *     An amateur remote control software library. Use at your own risk.
  *
  * @file    uart_sim.cpp
  * @brief   Hardware/software simulated UART functions

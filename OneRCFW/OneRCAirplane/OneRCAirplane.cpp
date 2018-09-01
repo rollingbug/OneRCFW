@@ -5,7 +5,7 @@
  *    / /_/ / /   \ / / ____/ /  -- /  /  /__   __   /  /__  _/  /_  / __ <
  *   /_____/ /_/ \_/ /_____/ /__/ \_\ /_____/  /_/  /_____/ /_____/ /_____/
  *
- *      A amateur remote control software library. Use at your own risk.
+ *     An amateur remote control software library. Use at your own risk.
  *
  * @file    OneRCAirplane.cpp
  * @brief
@@ -201,7 +201,7 @@ static AIRPLANE_CONFIG Airplane_Config =
 {
     .config_ID = AIRPLANE_CONFIG_ID,                        /* "1_AP" */
 
-    .config_date = AIRPLANE_FW_DATE,                        /* 2017/12/16 */
+    .config_date = AIRPLANE_FW_DATE,                        /* 2018/03/03 */
 
     /* default airplane control setting */
     .model_type = AIRPLANE_NORMAL,                          /* Normal airplane */
@@ -401,7 +401,6 @@ static AIRPLANE_STATUS Airplane_StatusSnapshot = {0};
 
 static int8_t Airplane_Init();
 static void Airplane_FlyCtrl();
-static float Airplane_BankToPitchCompensate(float roll_angle);
 static int8_t Airplane_LoadConfig(AIRPLANE_CONFIG *p_config);
 static int8_t Airplane_SaveConfig(AIRPLANE_CONFIG *p_config);
 static int8_t Airplane_ClearConfig(AIRPLANE_CONFIG *p_config);
@@ -823,17 +822,25 @@ static void Airplane_FlyCtrl()
              */
             roll_cosine = cos(MATH_DEG2RAD(Airplane_Status.ahrs_data.ned_att.roll_angle));
 
-            /* Increase NED pitch angle */
-            pitch_setpoint = (1.0 - roll_cosine) * AIRPLANE_BANK_TURN_PITCH_GAIN;
+            /* Increase NED pitch setpoint according to current roll angle (0 ~ +N degree). */
+            pitch_setpoint = (1.0 - fabs(roll_cosine)) * AIRPLANE_BANK_TURN_PITCH_GAIN;
+            pitch_setpoint = constrain(pitch_setpoint, 0, AIRPLANE_BANK_TURN_MAX_PITCH);
             Airplane_Status.setpoint.pitch_angle = pitch_setpoint;
 
             /* Increase elevator control gain (the divisor should not equal to 0) */
-            pitch_pid_gain = fabs(roll_cosine);
-            if(pitch_pid_gain != 0.0)
+            if(roll_cosine != 0.0)
                 pitch_pid_gain = 1.0 / roll_cosine;
             else
                 pitch_pid_gain = 1.0;
 
+            /*
+             * Limit the gain to -N ~ +N.
+             * The gain will be negative when the airplane flies upside down,
+             * so the servo will rotates reversely.
+             */
+            pitch_pid_gain = constrain(pitch_pid_gain,
+                                       -AIRPLANE_BANK_TURN_MAX_GAIN,
+                                       AIRPLANE_BANK_TURN_MAX_GAIN);
             pitch_pid_gain = pitch_pid_gain * Airplane_Config.pid_elev_cfg.scale;
             PID_SetScaleFactor(&Airplane_Status.pid_elev_servo, pitch_pid_gain);
 
@@ -913,25 +920,6 @@ static void Airplane_FlyCtrl()
         /* Transmit protocol message */
         Airplane_TxMessage(delta_ctrl_time);
     }
-}
-
-/**
- * Airplane_BankToPitchCompensate - Function to calculate pitch compensation angle
- *                                  for bank turn.
- *
- * @param   [in]        roll_angle      Current roll angle, -180 ~ 180.
- *
- * @return  [float]     Expected pitch compensation angle.
- *
- */
-static float Airplane_BankToPitchCompensate(float roll_angle)
-{
-    float pitch_angle;
-
-    pitch_angle = (1.0 - cos(MATH_DEG2RAD(roll_angle))) * AIRPLANE_BANK_TURN_PITCH_GAIN;
-    pitch_angle = constrain(pitch_angle, -AIRPLANE_BANK_TURN_MAX_PITCH, AIRPLANE_BANK_TURN_MAX_PITCH);
-
-    return pitch_angle;
 }
 
 /**
@@ -1228,7 +1216,7 @@ static void Airplane_ConfigControl()
                 /* Check current RX pulse width */
                 RCIN_ReadChannels(Airplane_Status.rc_pulse_in);
 
-                /* Clear configuration */
+                /* Clear configuration when TX ailerons stick is in left position. */
                 if(Airplane_Status.rc_pulse_in[RCIN_AILE_IDX] >= TIMER1_MICROS_TO_TICKS(1800)
                    && Airplane_Status.rc_pulse_in[RCIN_AILE_IDX] <= TIMER1_MICROS_TO_TICKS(2100)){
 
@@ -1236,7 +1224,10 @@ static void Airplane_ConfigControl()
 
                     break;
                 }
-                /* Do IMU sensors calibration and save the bias to ROM */
+                /*
+                 * Do IMU sensors calibration and save the bias to ROM when TX ailerons stick is
+                 * in right position.
+                 */
                 else if(Airplane_Status.rc_pulse_in[RCIN_AILE_IDX] >= TIMER1_MICROS_TO_TICKS(900)
                         && Airplane_Status.rc_pulse_in[RCIN_AILE_IDX] <= TIMER1_MICROS_TO_TICKS(1200)){
 

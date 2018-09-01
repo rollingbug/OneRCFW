@@ -5,7 +5,7 @@
  *    / /_/ / /   \ / / ____/ /  -- /  /  /__   __   /  /__  _/  /_  / __ <
  *   /_____/ /_/ \_/ /_____/ /__/ \_\ /_____/  /_/  /_____/ /_____/ /_____/
  *
- *       A amateur remote control software library. Use at your own risk.
+ *     An amateur remote control software library. Use at your own risk.
  *
  * @file    mpu6050_drv.c
  *
@@ -104,13 +104,13 @@ int8_t mpu6050_Init()
     I2C_WriteByte(MPU6050_DEV_ID, MPU6050_REG_PWR_MGMT_1,
                   _BV(MPU6050_PWR_MGMT_1_CLK0_BIT));
 
-    /* Setup sampling rate, 800 Hz by default */
+    /* Setup sampling rate, 1000 Hz by default */
     I2C_WriteByte(MPU6050_DEV_ID, MPU6050_REG_SMPLRT_DIV,
                   MPU6050_FIFO_SAMPLE_SETTING);
 
     /* Setup digital low pass filter (42 Hz)*/
     I2C_WriteByte(MPU6050_DEV_ID, MPU6050_REG_CONFIG,
-                  (MPU6050_DLPF_CFG_42HZ << MPU6050_CONFIG_DLPF_CFG0_BIT));
+                  (MPU6050_DLPF_CONFIG << MPU6050_CONFIG_DLPF_CFG0_BIT));
 
     /* Setup gyroscope sensing range (+-2000 degree per second) */
     I2C_WriteByte(MPU6050_DEV_ID, MPU6050_REG_GYRO_CONFIG,
@@ -299,7 +299,7 @@ static void mpu6050_DumpRegs()
     reg_cnt = 0;
     while(reg_cnt < sizeof(reg_addr)){
 
-        I2C_ReadByte(0x68, reg_addr[reg_cnt], &reg_value);
+        I2C_ReadByte(MPU6050_DEV_ID, reg_addr[reg_cnt], &reg_value);
 
         Uart0_Println(PSTR("[%hhX]\t= %hhX"), reg_addr[reg_cnt], reg_value);
 

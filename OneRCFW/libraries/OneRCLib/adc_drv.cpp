@@ -5,7 +5,7 @@
  *    / /_/ / /   \ / / ____/ /  -- /  /  /__   __   /  /__  _/  /_  / __ <
  *   /_____/ /_/ \_/ /_____/ /__/ \_\ /_____/  /_/  /_____/ /_____/ /_____/
  *
- *       A amateur remote control software library. Use at your own risk.
+ *     An amateur remote control software library. Use at your own risk.
  *
  * @file    adc_drv.cpp
  * @brief   ADC functions.
@@ -22,7 +22,7 @@
  *              ADC CH 1 = Arduino A1 / AVR PC1
  *              ADC CH 2 = Arduino A2 / AVR PC2
  *              ADC CH 3 = Arduino A3 / AVR PC3
- *              ADC CH 3 = Arduino A7 / Analog
+ *              ADC CH 4 = Arduino A7 / Analog
  *
  *          Hardware:
  *              Analog-to-Digital Converter
@@ -135,7 +135,7 @@ int8_t ADC_Init()
     /*
      * DIDR0 - Digital Input Disable Register 0
      */
-    DIDR0 = _BV(ADC_CH0) | _BV(ADC_CH1) | _BV(ADC_CH2) | _BV(ADC_CH3);
+    DIDR0 = ((_BV(ADC_CH0) | _BV(ADC_CH1) | _BV(ADC_CH2) | _BV(ADC_CH3) | _BV(ADC_CH4)) & 0x3F);
 
     /* Enable all interrupts */
     sei();
