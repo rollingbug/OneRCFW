@@ -1,7 +1,6 @@
 # OneRCFW
 An Arduino/AVR based flight controller for RC fixed wing.  
 
-![Airplane1](OneRCDesignDoc/20629.jpg =512x)  ![Airplane2](OneRCDesignDoc/20636.jpg =512x)  
 
     - 5 input channels (Throttle, Ailerons, Elevator, Rudder, flight mode)  
     - 4 output channels (0.5 us resolution PWM/PPM signal generator).  
@@ -22,8 +21,11 @@ An Arduino/AVR based flight controller for RC fixed wing.
   
 ![Pin assignment picture](OneRCDesignDoc/arduino_flyctrl_layout_20171217_v1_8.png)
 
-
+<img src="https://github.com/rollingbug/OneRCFW/blob/master/OneRCDesignDoc/20629.jpg" width="384" >  <img src="https://github.com/rollingbug/OneRCFW/blob/master/OneRCDesignDoc/20636.jpg" width="384" ><br/><br/><br/>
   
+
+
+
 Details:
 ---------------------
 Flight controller source code: [OneRCFW](https://github.com/rollingbug/OneRCFW/tree/master/OneRCFW)  
@@ -34,8 +36,10 @@ Design documents: [OneRCDesignDoc](https://github.com/rollingbug/OneRCFW/tree/ma
 
 ![FC block diagram](OneRCDesignDoc/OneRCFW_block_diagram.png)
 
-
   
+
+
+
 Build and Installation:
 ---------------------
 1. Prepare Arduino 1.6.9 IDE.
@@ -43,10 +47,11 @@ Build and Installation:
 3. Change board type setting to "Arduino Nano" or "Micro" and correct UART port setting.
 4. Build and upload the firmware to Arduino or customized PCB.
 5. Connect the Radio receiver to flight controller.
-6. Check the channel output signal and the status of on board LEDs.
-
-
+6. Check the channel output signal and the status of on board LEDs.<br/><br/><br/>
   
+  
+  
+
 For Simulation mode:
 ---------------------
 1. Download and instll FlightGear, and copy the protocol and configuration file to speicfic folder.
