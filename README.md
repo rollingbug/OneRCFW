@@ -44,7 +44,7 @@ Build and Installation:
 ---------------------
 1. Prepare Arduino 1.6.9 IDE.
 2. Click the **OneRCAirplane.ino** to launch Arduino IDE. 
-3. Change board type setting to "Arduino Nano" or "Micro" and correct UART port setting.
+3. Change board type setting to "Arduino Nano" or "Pro Mini" and correct UART port setting.
 4. Build and upload the firmware to Arduino or customized PCB.
 5. Connect the Radio receiver to flight controller.
 6. Check the channel output signal and the status of on board LEDs.<br/><br/><br/>
